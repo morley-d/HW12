@@ -1,18 +1,18 @@
 import json
-import app
+from exeptions import *
 
 
 def load_json_data(path):
-    with open(path, 'r', encoding='utf-8') as file:
-        return json.load(file)
+    try:
+        with open(path, 'r', encoding='utf-8') as file:
+            return json.load(file)
+    except (FileNotFoundError, json.JSONDecodeError):
+        raise DataJsonError
 
 
-def search_posts_by_substring(substring):
-    posts = load_json_data(app.POST_PATH)
+def search_posts_by_substring(posts, substring):
     posts_founded = []
     for post in posts:
         if substring.lower() in post['content'].lower():
             posts_founded.append(post)
     return posts_founded
-
-print(search_posts_by_substring("елк"))
